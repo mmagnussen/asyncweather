@@ -1,8 +1,14 @@
 // add global variable containing XHR object here
-
+let httpRequest = new XMLHttpRequest();
 
 // add get() function here
-
+function get(url, success) {
+    httpRequest.open('GET', url)
+    httpRequest.onload = function () {
+        success(httpRequest.responseText);
+    }
+    httpRequest.send();
+}
 
 function tempToF(kelvin) {
     return ((kelvin - 273.15) * 1.8 + 32).toFixed(0);
@@ -29,9 +35,12 @@ function successHandler(data) {
     weatherDiv.classList.remove('hidden');
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const apiKey = 'd126cacbbfebf7c84ad878e9deffc0e1';
-    const url = 'https://api.openweathermap.org/data/2.5/weather?q=los+angeles&APPID=' + apiKey;
+document.addEventListener('DOMContentLoaded', function () {
+    const apiKey = 'f9f2b9dbbd0092e4d3117e8f16d17432';
+    const url = 'https://api.openweathermap.org/data/2.5/weather?q=nashville&APPID=' + apiKey;
     // add get() function call here
-    
+    get(url, successHandler);
+    //The successHandler function needs know that the data was returned before executing. Enter>> callback to call the success callback.
+    // successHandler(httpRequest.responseText);
 });
+
