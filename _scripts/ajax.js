@@ -2,17 +2,19 @@
 let httpRequest = new XMLHttpRequest();
 
 // add get() function here
-function get(url, success, fail) {
-    httpRequest.open('GET', url)
-    httpRequest.onload = function () {
-        if (httpRequest.status === 200) {
-            success(httpRequest.responseText);
-        } else {     //Next define a fail-error status
-            fail(httpRequest.status);
-        }
+function get(url) {
+    return new Promise(function (resolve, reject) {
+        httpRequest.open('GET', url)
+        httpRequest.onload = function () {
+            if (httpRequest.status === 200) {
+                resolve(httpRequest.response);
+            } else {     //Next define a fail-error status
+                reject(Error(httpRequest.statusText)); //This error is not promise-specific
+            }
 
-    }
-    httpRequest.send();
+        }
+        httpRequest.send();
+    })
 }
 
 function tempToF(kelvin) {
@@ -47,12 +49,27 @@ function failHandler(status) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    // const apiKey = 'f9f2b9dbbd0092e4d3117e8f16d17432';
-    const apiKey = '';
+    const apiKey = 'f9f2b9dbbd0092e4d3117e8f16d17432';
+    //const apiKey = '';
+
     const url = 'https://api.openweathermap.org/data/2.5/weather?q=nashville&APPID=' + apiKey;
     // add get() function call here
-    get(url, successHandler, failHandler);
+    //  get(url, successHandler, failHandler);
     //The successHandler function needs know that the data was returned before executing. Enter>> callback to call the success callback.
     // successHandler(httpRequest.responseText);
+
+    //console.log(get(url));
+
+    //Here, a resolved promise is handing off the resultant data
+    get(url)
+        //handle a resolved promise
+        .then(function (response) {
+            successHandler(response);
+        })
+
+        //handle a rejected promise
+        .catch(function (status) {
+            failHandler(status);
+        });
 });
 
