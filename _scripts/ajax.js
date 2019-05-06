@@ -39,18 +39,17 @@ function successHandler(data) {
         </p>
     `
     weatherDiv.innerHTML = weatherFragment;
-    weatherDiv.classList.remove('hidden');
+
 }
 //Display this image if the data GET fails
 function failHandler(status) {
     console.log(status);
-    const weatherDiv = document.querySelector('#weather');
-    weatherDiv.classList.remove('hidden');
+
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const apiKey = 'f9f2b9dbbd0092e4d3117e8f16d17432';
-    //const apiKey = '';
+    //const apiKey = 'f9f2b9dbbd0092e4d3117e8f16d17432';
+    const apiKey = '';
 
     const url = 'https://api.openweathermap.org/data/2.5/weather?q=nashville&APPID=' + apiKey;
     // add get() function call here
@@ -70,6 +69,11 @@ document.addEventListener('DOMContentLoaded', function () {
         //handle a rejected promise
         .catch(function (status) {
             failHandler(status);
+        })
+        //handle an alternate fail response to reduce redundancy
+        .finally(function () {
+            const weatherDiv = document.querySelector('#weather');
+            weatherDiv.classList.remove('hidden');
         });
 });
 
