@@ -55,8 +55,8 @@ function failHandler(status) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const apiKey = 'f9f2b9dbbd0092e4d3117e8f16d17432';
-    //const apiKey = '';
+    //const apiKey = 'f9f2b9dbbd0092e4d3117e8f16d17432';
+    const apiKey = '';
 
     //const url = 'https://api.openweathermap.org/data/2.5/weather?q=nashville&APPID=' + apiKey;
 
@@ -75,33 +75,65 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     // add get() function call here
 
-    Promise.all([get(urls[0]), get(urls[1]), get(urls[2]), get(urls[3])])
-        //  get(url, successHandler, failHandler);
-        //The successHandler function needs know that the data was returned before executing. Enter>> callback to call the success callback.
-        // successHandler(httpRequest.responseText);
+    // Promise.all([get(urls[0]), get(urls[1]), get(urls[2]), get(urls[3])])
+    //     //  get(url, successHandler, failHandler);
+    //     //The successHandler function needs know that the data was returned before executing. Enter>> callback to call the success callback.
+    //     // successHandler(httpRequest.responseText);
 
-        //console.log(get(url));
+    //     //console.log(get(url));
 
-        //Here, a resolved promise is handing off the resultant data
-        // get(url)
-        //handle a resolved promise
-        .then(function (responses) {
-            return responses.map(function (response) { //return array of literals/api urls
+    //     //Here, a resolved promise is handing off the resultant data
+    //     // get(url)
+    //     //handle a resolved promise
+    //     .then(function (responses) {
+    //         return responses.map(function (response) { //return array of literals/api urls
+    //             return successHandler(response);
+    //         })
+    //     })
+    //     //markup the weather header 
+    //     .then(function (literals) {
+    //         weatherDiv.innerHTML = `<h1>Weather</h1>${literals.join('')}`;
+    //     })
+    //     //handle a rejected promise
+    //     .catch(function (status) {
+    //         failHandler(status);
+    //     })
+    //     //handle an alternate fail response to reduce redundancy
+    //     .finally(function () {
+
+    //         weatherDiv.classList.remove('hidden');
+    //     });
+
+    //create an async/await function that will wait to get the weather data for each of the four cities before moving on
+    (async function () {
+
+        // the 'try' block is part of error handling in an async/await function
+        try {
+            let responses = [];
+
+            //each of the await statements will begin at the same time, but the obejct 'literals' is waiting for those awaits to return a
+            responses.push(await get(urls[0]));
+            responses.push(await get(urls[1]));
+            responses.push(await get(urls[2]));
+            responses.push(await get(urls[3]));
+
+            let literals = responses.map(function (response) { //return array of literals/api urls
                 return successHandler(response);
-            })
-        })
-        //markup the weather header 
-        .then(function (literals) {
-            weatherDiv.innerHTML = `<h1>Weather</h1>${literals.join('')}`;
-        })
-        //handle a rejected promise
-        .catch(function (status) {
-            failHandler(status);
-        })
-        //handle an alternate fail response to reduce redundancy
-        .finally(function () {
+            });
 
+            weatherDiv.innerHTML = `<h1>Weather</h1>${literals.join('')}`;
             weatherDiv.classList.remove('hidden');
-        });
+        }
+
+        catch (status) {
+            failHandler(status);
+
+        }
+        finally {
+            weatherDiv.classList.remove('hidden');
+        }
+
+
+    })();
 });
 
