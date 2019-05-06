@@ -2,10 +2,15 @@
 let httpRequest = new XMLHttpRequest();
 
 // add get() function here
-function get(url, success) {
+function get(url, success, fail) {
     httpRequest.open('GET', url)
     httpRequest.onload = function () {
-        success(httpRequest.responseText);
+        if (httpRequest.status === 200) {
+            success(httpRequest.responseText);
+        } else {     //Next define a fail-error status
+            fail(httpRequest.status);
+        }
+
     }
     httpRequest.send();
 }
@@ -34,12 +39,19 @@ function successHandler(data) {
     weatherDiv.innerHTML = weatherFragment;
     weatherDiv.classList.remove('hidden');
 }
+//Display this image if the data GET fails
+function failHandler(status) {
+    console.log(status);
+    const weatherDiv = document.querySelector('#weather');
+    weatherDiv.classList.remove('hidden');
+}
 
 document.addEventListener('DOMContentLoaded', function () {
-    const apiKey = 'f9f2b9dbbd0092e4d3117e8f16d17432';
+    // const apiKey = 'f9f2b9dbbd0092e4d3117e8f16d17432';
+    const apiKey = '';
     const url = 'https://api.openweathermap.org/data/2.5/weather?q=nashville&APPID=' + apiKey;
     // add get() function call here
-    get(url, successHandler);
+    get(url, successHandler, failHandler);
     //The successHandler function needs know that the data was returned before executing. Enter>> callback to call the success callback.
     // successHandler(httpRequest.responseText);
 });
