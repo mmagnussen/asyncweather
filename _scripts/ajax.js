@@ -55,8 +55,8 @@ function failHandler(status) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    //const apiKey = 'f9f2b9dbbd0092e4d3117e8f16d17432';
-    const apiKey = '';
+    const apiKey = 'f9f2b9dbbd0092e4d3117e8f16d17432';
+    //const apiKey = ''; //invalid apiKey for testing
 
     //const url = 'https://api.openweathermap.org/data/2.5/weather?q=nashville&APPID=' + apiKey;
 
@@ -104,6 +104,8 @@ document.addEventListener('DOMContentLoaded', function () {
     //         weatherDiv.classList.remove('hidden');
     //     });
 
+
+
     //create an async/await function that will wait to get the weather data for each of the four cities before moving on
     (async function () {
 
@@ -132,8 +134,87 @@ document.addEventListener('DOMContentLoaded', function () {
         finally {
             weatherDiv.classList.remove('hidden');
         }
-
-
     })();
 });
 
+/*
+    //enter transpiled code of the above async/await function from Babel-Rebel transpiler:
+
+    function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+    function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+    _asyncToGenerator(
+        /*#__PURE__*/ /*
+        regeneratorRuntime.mark(function _callee() {
+            var responses, literals;
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            _context.prev = 0;
+                            responses = [];
+                            _context.t0 = responses;
+                            _context.next = 5;
+                            return get(urls[0]);
+
+                        case 5:
+                            _context.t1 = _context.sent;
+
+                            _context.t0.push.call(_context.t0, _context.t1);
+
+                            _context.t2 = responses;
+                            _context.next = 10;
+                            return get(urls[1]);
+
+                        case 10:
+                            _context.t3 = _context.sent;
+
+                            _context.t2.push.call(_context.t2, _context.t3);
+
+                            _context.t4 = responses;
+                            _context.next = 15;
+                            return get(urls[2]);
+
+                        case 15:
+                            _context.t5 = _context.sent;
+
+                            _context.t4.push.call(_context.t4, _context.t5);
+
+                            _context.t6 = responses;
+                            _context.next = 20;
+                            return get(urls[3]);
+
+                        case 20:
+                            _context.t7 = _context.sent;
+
+                            _context.t6.push.call(_context.t6, _context.t7);
+
+                            literals = responses.map(function (response) {
+                                return successHandler(response);
+                            });
+                            weatherDiv.innerHTML = "<h1>Weather</h1>".concat(literals.join(''));
+                            weatherDiv.classList.remove('hidden');
+                            _context.next = 30;
+                            break;
+
+                        case 27:
+                            _context.prev = 27;
+                            _context.t8 = _context["catch"](0);
+                            failHandler(_context.t8);
+
+                        case 30:
+                            _context.prev = 30;
+                            weatherDiv.classList.remove('hidden');
+                            return _context.finish(30);
+
+                        case 33:
+                        case "end":
+                            return _context.stop();
+                    }
+                }
+            }, _callee, null, [[0, 27, 30, 33]]);
+        }))();
+});
+
+*/
